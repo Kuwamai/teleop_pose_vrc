@@ -14,7 +14,6 @@ def unpack_tex(frame):
         iy = int(block / 2 + block * i)
         pos += frame_th[iy, ix] * 2 ** (15 - i)
     pos = (pos - 32768) / 1000
-    print(pos)
     return pos
 
 def main():
@@ -30,11 +29,12 @@ def main():
     while(True):
         ret, frame = capture.read()
         pos = unpack_tex(frame)
+        print(pos)
         talker.publish(roslibpy.Message({
             "position": {
-                "x": pos[0],
-                "y": pos[1],
-                "z": pos[2]
+                "x": pos[2],
+                "y": -pos[0],
+                "z": pos[1]
             },
             "orientation": {
                 "x": 0,
