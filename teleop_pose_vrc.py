@@ -26,12 +26,10 @@ def main():
     talker = roslibpy.Topic(client, topic_name, message_type, queue_size=1)
 
     capture = cv2.VideoCapture(1)
-    count = 0
     while(True):
         ret, frame = capture.read()
         pos = unpack_tex(frame)
         print(pos)
-        pos=[0, 0, 0]
         talker.publish(roslibpy.Message({
             "position": {
                 "x": pos[2],
@@ -39,13 +37,12 @@ def main():
                 "z": pos[1]
             },
             "orientation": {
-                "x": count,
+                "x": 0,
                 "y": 0,
                 "z": 0,
                 "w": 1
             }
         }))
-        count+=1
 
         frame = cv2.resize(frame, (frame.shape[1], frame.shape[0]))
         cv2.imshow('title',frame)
