@@ -25,11 +25,13 @@ def main():
     message_type = "geometry_msgs/Pose"
     talker = roslibpy.Topic(client, topic_name, message_type)
 
-    capture = cv2.VideoCapture(1)
+    # capture = cv2.VideoCapture(1)
+    count = 0
     while(True):
-        ret, frame = capture.read()
-        pos = unpack_tex(frame)
-        print(pos)
+        #ret, frame = capture.read()
+        #pos = unpack_tex(frame)
+        #print(pos)
+        pos=[0, 0, 0]
         talker.publish(roslibpy.Message({
             "position": {
                 "x": pos[2],
@@ -37,25 +39,26 @@ def main():
                 "z": pos[1]
             },
             "orientation": {
-                "x": 0,
+                "x": count,
                 "y": 0,
                 "z": 0,
                 "w": 1
             }
         }))
+        count+=1
 
-        frame = cv2.resize(frame, (frame.shape[1], frame.shape[0]))
-        cv2.imshow('title',frame)
+        #frame = cv2.resize(frame, (frame.shape[1], frame.shape[0]))
+        #cv2.imshow('title',frame)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        #if cv2.waitKey(1) & 0xFF == ord('q'):
+            #break
 
         time.sleep(0.05)
 
     talker.unadvertise()
     client.terminate()
-    capture.release()
-    cv2.destroyAllWindows()
+    #capture.release()
+    #cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()
