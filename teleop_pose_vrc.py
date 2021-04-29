@@ -3,6 +3,8 @@ import time
 import numpy as np
 import sys
 import roslibpy
+from twisted.internet import reactor
+reactor.timeout = lambda : 0.0001
 
 def unpack_tex(frame):
     block = frame.shape[0]/16
